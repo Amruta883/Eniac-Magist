@@ -1,0 +1,14 @@
+SELECT COUNT(oi.product_id), 
+	CASE 
+		WHEN price > 1000 THEN "Expensive"
+		WHEN price > 100 THEN "Mid-range"
+		ELSE "Cheap"
+	END AS "price_range"
+FROM order_items oi
+LEFT JOIN products p
+	ON p.product_id = oi.product_id
+LEFT JOIN product_category_name_translation pt
+	USING (product_category_name)
+WHERE pt.product_category_name_english IN ("audio", "electronics", "computers_accessories", "pc_gamer", "computers", "tablets_printing_image", "telephony")
+GROUP BY price_range
+ORDER BY 1 DESC;
